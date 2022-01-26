@@ -7,7 +7,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get("/", (req, res) => {
-    console.log("WePick Homepage request")
+    res.send("WePick Homepage request")
 })
 
 app.use("/movies", moviesController)
