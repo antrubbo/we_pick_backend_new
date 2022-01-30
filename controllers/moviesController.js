@@ -1,7 +1,7 @@
 // const express = require("express")
 // const movies = express.Router()
 const db = require("../models");
-const movies = db.movies;
+const Movie = db.movies;
 const axios = require('axios');
 
 require('dotenv').config()
