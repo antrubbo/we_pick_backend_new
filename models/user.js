@@ -1,41 +1,26 @@
-// const { sequelize, Sequelize } = require("./models")
 
-// const User = sequelize.define('User', 
-module.exports = (sequelize, Sequelize) => {
-    return sequelize.define('User', {
+// const sequelize = new Sequelize('postgres://postgres@localhost:5432/wepick');
+// const { Sequelize, DataTypes } = require('sequelize');
+// const sequelize = new Sequelize("sqlite::memory:");
+
+// the above three lines aren't needed because we're now exporting User as a function and receiving sequelize and DataTypes as parameters, being invoked in index.js
+
+module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define('User', {
         username: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
         email: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
         password: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             defaultValue: "pursuit"
         }
-    })
+    }, {
+        // Other model options go here
+    });
+    return User
 }
-
-// module.exports = User
-
-// const { Sequelize, DataTypes } = require('sequelize');
-// const sequelize = new Sequelize('postgres://postgres@localhost:5432/wepick');
-
-// const User = sequelize.define('User', {
-//     // Model attributes are defined here
-//     firstName: {
-//       type: DataTypes.STRING,
-//       allowNull: false
-//     },
-//     lastName: {
-//       type: DataTypes.STRING
-//       // allowNull defaults to true
-//     }
-//   }, {
-//     // Other model options go here
-//   });
-  
-//   // `sequelize.define` also returns the model
-//   console.log(User === sequelize.models.User); // true
