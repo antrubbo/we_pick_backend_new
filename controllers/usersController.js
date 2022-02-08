@@ -4,58 +4,50 @@ const db = require("../models");
 const User = db.users;
 
 exports.getAll = async (req, res) => {
-    const { username } = req.query
-    // res.send(username)
-    let foundUser = await User.findAll({
-        where: { username }
-    })
-    console.log(foundUser)
-    // .then(data => {
-    //     res.send(data)
-    // })
-    // .catch((error) => {
-    //     res.json(error)
-    // })
+    const { username, email } = req.query
+    if (username) {
+        let foundUser = await User.findAll({ where: { username } })
+        if (foundUser.length) res.status(200).send(foundUser)
+        else res.status(404).json({ error: "No user associated with that username."})
+    } else if (email) {
+        const userEmail = await User.findAll({ where: { email } });
+        if(userEmail.length) res.status(200).send(userEmail)
+        else res.status(404).json({ error: "No user associated with that email address."})
+    } 
+    // This is prob not how this should function - if the user leaves the username field blank, it sends all users instead of an error msg
+    else {
+        let allUsers = await User.findAll()
+        res.status(200).send(allUsers)
+    }
 }
 
 exports.getOne = async (req, res) => {
     let { id } = req.params;
-    // let { username, email } = req.query 
-
-    let userId = await User.findByPk(id)
-    if (userId) res.status(200).send(user)
-    else res.status(404).json({ error: "No user with that id exists!"})
-
-    // should use findOne?
-    // const userName = User.findAll({ where: { username } });
-    // if(userName) res.status(200).send(userName)
-    // else res.status(404).json({ error: "No user with that username exists!"})
-
-    //email search not working, may be different method
-    const userEmail = User.findAll({ where: { email } });
-    if(userEmail) res.status(200).send(userEmail)
-    else res.status(404).json({ error: "No user associated with that email address."})
+    let user = await User.findByPk(id)
+    if (user) res.status(200).send(user)
+    else res.status(404).json({ error: "No user found"})
 }
 
 exports.login = async (req, res) => {
-
+    const { username } = req.query
+    let foundUser = await User.findAll({ where: { username } })
+    if (foundUser.length) res.status(200).json(foundUser)
+    else res.status(404).json({ error: "No user associated with that username"})
 }
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     const { username, email, password } = req.body
-    // should use findOrCreate? how to make async/await?
-    User.create({
-        username, email, password
-    })
-    .then(data => {
-        res.json(data)
-    })
-    .catch(error => res.json({error: "Must provide username and email"}))
+    try{
+        let newUser = await User.create({ username, email, password })
+        res.status(200).json(newUser)
+    } catch {
+        res.status(500).json({ error: "Must provide username and email" })
+    }
 }
 
-exports.update = async (req, res) => {
+// exports.update = async (req, res) => {
 
-}
+// }
 
 exports.deleteOne = async (req, res) => {
     let { id } = req.params;
