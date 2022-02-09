@@ -3,7 +3,7 @@
 const db = require("../models");
 const User = db.users;
 
-exports.getAll = async (req, res) => {
+exports.index = async (req, res) => {
     const { username, email } = req.query
     if (username) {
         let foundUser = await User.findAll({ where: { username } })
@@ -21,7 +21,7 @@ exports.getAll = async (req, res) => {
     }
 }
 
-exports.getOne = async (req, res) => {
+exports.getById = async (req, res) => {
     let { id } = req.params;
     let user = await User.findByPk(id)
     if (user) res.status(200).send(user)
@@ -45,9 +45,16 @@ exports.create = async (req, res) => {
     }
 }
 
-// exports.update = async (req, res) => {
-
-// }
+exports.update = async (req, res) => {
+    const { id } = req.params;
+    const { body } = req
+    let user = await User.findByPk(id)
+    if (!user) res.status(400).json({ message: `No user with id ${id} found`})
+    await user.update(body)
+    if (user) res.status(200).send(user)
+    //need to figure out error handling here - maybe validations.js function?
+    else res.status(400).json({ message: "Must include all fields!" })
+}   
 
 exports.deleteOne = async (req, res) => {
     let { id } = req.params;
