@@ -7,18 +7,23 @@ const axios = require('axios');
 require('dotenv').config()
 const KEY = process.env.KEY
 
-exports.getAll = (req, res) => {
-    res.json("This is the /movies route")
-}
-
-exports.search = (req, res) => {
+exports.index = (req, res) => {
     const { title } = req.query
-    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=en-US&query=${title}&page=1&include_adult=false`)
-    .then(response => { res.send(response.data.results)})
-    .catch(response => response.status(422).json( {error: "No results to display!"} ))
+    if (title) {
+        axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=en-US&query=${title}&page=1&include_adult=false`)
+        .then(response => { res.send(response.data.results)})
+        .catch(response => response.status(422).json( {error: "No results to display!"} ))
+    }
 }
 
-exports.getOne = (req, res) => {
+// exports.search = (req, res) => {
+//     const { title } = req.query
+//     axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=en-US&query=${title}&page=1&include_adult=false`)
+//     .then(response => { res.send(response.data.results)})
+//     .catch(response => response.status(422).json( {error: "No results to display!"} ))
+// }
+
+exports.getById = (req, res) => {
     const { id } = req.params
     axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${KEY}&language=en-US&append_to_response=videos`)
     .then(response => res.send(response.data))

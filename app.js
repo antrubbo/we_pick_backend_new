@@ -7,7 +7,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get("/", (req, res) => {
-    res.send("WePick Homepage request")
+    res.send("WePick Homepage")
 })
 
 const db = require("./models");
