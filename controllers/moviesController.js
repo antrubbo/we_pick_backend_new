@@ -9,11 +9,12 @@ const KEY = process.env.KEY
 
 exports.index = (req, res) => {
     const { title } = req.query
-    if (title) {
-        axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=en-US&query=${title}&page=1&include_adult=false`)
-        .then(response => { res.send(response.data.results)})
-        .catch(response => response.status(422).json( {error: "No results to display!"} ))
-    }
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=en-US&query=${title}&page=1&include_adult=false`)
+    .then(response => {
+        const { results } = response.data 
+        if (results.length) res.status(200).json(results)
+        else res.status(422).json( {error: "No results to display!"} )
+    })
 }
 
 // exports.search = (req, res) => {
