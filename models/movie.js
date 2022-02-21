@@ -13,7 +13,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         runtime: {
             type: Sequelize.INTEGER
-        }
+        }, 
+        posterPath: {
+            type: Sequelize.STRING
+        },
     }, {
         // Other model options go here
     })
