@@ -28,12 +28,12 @@ exports.getById = async (req, res) => {
     else res.status(404).json({ error: "No user found"})
 }
 
-exports.login = async (req, res) => {
-    const { username } = req.query
-    let foundUser = await User.findAll({ where: { username } })
-    if (foundUser.length) res.status(200).json(foundUser)
-    else res.status(404).json({ error: "No user associated with that username"})
-}
+// exports.login = async (req, res) => {
+    // const { username } = req.query
+    // let foundUser = await User.findAll({ where: { username } })
+    // if (foundUser.length) res.status(200).json(foundUser)
+    // else res.status(404).json({ error: "No user associated with that username"})
+// }
 
 exports.create = async (req, res) => {
     const { username, email, password } = req.body
