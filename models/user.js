@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: "pursuit"
         }
     }, {
-        // Other model options go here
+        
     });
     return User
 }

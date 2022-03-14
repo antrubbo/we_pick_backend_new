@@ -2,6 +2,7 @@
 // const users = express.Router()
 const db = require("../models");
 const User = db.users;
+const bcrypt = require("bcryptjs")
 
 exports.index = async (req, res) => {
     const { username, email } = req.query
@@ -28,12 +29,43 @@ exports.getById = async (req, res) => {
     else res.status(404).json({ error: "No user found"})
 }
 
-// exports.login = async (req, res) => {
-    // const { username } = req.query
-    // let foundUser = await User.findAll({ where: { username } })
-    // if (foundUser.length) res.status(200).json(foundUser)
-    // else res.status(404).json({ error: "No user associated with that username"})
-// }
+exports.login = async (req, res) => {
+    const { password, email } = req.body
+    let foundUser = await User.findAll({ where: { email } })
+    if (!foundUser.length) {
+        // errors.email = 'User not found!';
+        res.status(404).json({error: "User not found!!"})
+    } else {
+        let originalPassword = foundUser[0].password
+        console.log("originalPassword: ", originalPassword)
+        console.log("password: ", password)
+
+    //     bcrypt
+    //         .compare(password, originalPassword)
+    //         .then(isMatch => {
+    //             if (isMatch) {
+    //                 // user matched
+    //                 console.log('matched!')
+    //                 const { id, username } = user[0];
+    //                 const payload = { id, username }; //jwt payload
+    //                 // console.log(payload)
+
+    //                 jwt.sign(payload, 'secret', { 
+    //                     expiresIn: 3600 
+    //                 }, (err, token) => {
+    //                     res.json({
+    //                     success: true,
+    //                     token: 'Bearer ' + token
+    //                     });
+    //                 });
+    //             } else {
+    //                 // errors.password = 'Password not correct';
+    //                 res.status(400).json({error: "Password is not correct!"});
+    //             }
+    //     }).catch(err => console.log(err));
+    // }
+}
+// else res.status(404).json({ error: "No user associated with that username"})
 
 exports.create = async (req, res) => {
     const { username, email, password } = req.body
