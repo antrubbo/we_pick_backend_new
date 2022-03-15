@@ -3,10 +3,11 @@ module.exports = (sequelize, DataTypes) => {
         userId: {
             type: DataTypes.INTEGER,
             references: {
-                model: User,
+                model: sequelize.User,
                 key: 'id'
             }
         }
     });
+    // List.belongsTo(sequelize.User)
     return List
 }

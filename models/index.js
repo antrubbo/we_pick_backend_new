@@ -3,13 +3,19 @@ const { Sequelize, DataTypes } = require("sequelize")
 const sequelize = new Sequelize("sqlite::memory:");
 
 const users = require("./user.js")(sequelize, DataTypes)
+const lists = require("./list.js")(sequelize, DataTypes)
 const movies = require('./movie.js')(sequelize, DataTypes)
 
 // Observe that, in the examples above, Sequelize refers to the library itself while sequelize refers to an instance of Sequelize, which represents a connection to one database. This is the recommended convention and it will be followed throughout the documentation.
+
+users.User.hasMany(sequelize.List)
+lists.List.belongsTo(sequelize.User)
+
 
 module.exports = { 
     Sequelize, 
     sequelize,
     users,
-    movies
+    movies,
+    lists
 }
